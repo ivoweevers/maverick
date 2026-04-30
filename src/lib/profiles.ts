@@ -11,18 +11,18 @@ export type BusinessProfile = {
 
 /**
  * Keys must be E.164 with leading + (e.g. +31612345678).
- * Replace the sample entry with your real WhatsApp number (same format Twilio sends after stripping whatsapp:).
+ * Replace the sample entry with your real WhatsApp number (same format as Twilio `From` after stripping `whatsapp:`).
  */
 const PROFILES: Record<string, BusinessProfile> = {
-  "+31600000000": {
-    phone: "+31600000000",
-    name: "Replace With Your Name",
-    country: "Netherlands",
-    tax_regime: "ZZP / income tax",
-    business_type: "Sole proprietor / consulting",
-    city: "Amsterdam",
+  "+447535065178": {
+    phone: "+447535065178",
+    name: "Ivo",
+    country: "Italy",
+    tax_regime: "Forfettario",
+    business_type: "Sole proprietor",
+    city: "Cagliari",
     accountant_status: "External accountant yearly",
-    notes: "VAT registered; fiscal year = calendar year.",
+    notes: "VAT registered",
   },
 };
 
