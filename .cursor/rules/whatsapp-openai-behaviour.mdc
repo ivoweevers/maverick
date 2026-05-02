@@ -1,0 +1,11 @@
+---
+description: WhatsApp (Twilio) and OpenAI assistant behaviour
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# WhatsApp and OpenAI behaviour
+
+- Webhook handlers must be idempotent where Twilio may retry; validate signatures when configured.
+- Keep prompts and tool definitions consistent with `docs/architecture/whatsapp-flow.md` and `docs/architecture/openai-integration.md`.
+- Domain-specific copy and flows: align with `docs/domains/*/prompts.md` and `docs/global-context/tone-of-voice.md`.

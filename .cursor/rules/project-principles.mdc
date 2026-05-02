@@ -1,0 +1,10 @@
+---
+description: Core product and engineering principles for this repo
+alwaysApply: true
+---
+
+# Project principles
+
+- Prefer `docs/` for product and domain truth; keep code aligned with those documents.
+- Ship small, reviewable changes; keep secrets out of the repo (use env vars).
+- When in doubt, cite `docs/product/vision.md` and domain files under `docs/domains/`.

@@ -1,0 +1,13 @@
+---
+description: Bookkeeping domains (invoicing, expenses, profile)
+globs:
+  - docs/domains/**/*.md
+  - src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Bookkeeping domain
+
+- Invoicing, expenses, and profile behaviour must match `docs/domains/<domain>/` (requirements, data model, edge cases).
+- Use `docs/global-context/` for currencies, countries, and tax *principles* only—implementation stays conservative.
+- Glossary: `docs/product/glossary.md`.

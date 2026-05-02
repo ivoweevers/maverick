@@ -1,0 +1,10 @@
+---
+description: Safety boundaries and non-advice for tax/legal content
+alwaysApply: true
+---
+
+# Safety and tax advice
+
+- Do not present assistant output as legal, tax, or accounting advice. Encourage users to consult professionals for jurisdiction-specific decisions.
+- When discussing tax, stay aligned with `docs/global-context/tax-principles.md` and `docs/global-context/trust-and-safety.md`.
+- If a user asks for definitive tax treatment, prefer disclaimers and general information over specific recommendations.
