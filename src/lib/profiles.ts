@@ -1,3 +1,5 @@
+import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+
 export type BusinessProfile = {
   phone: string;
   name: string;
@@ -9,22 +11,33 @@ export type BusinessProfile = {
   notes: string;
 };
 
-/**
- * Keys must be E.164 with leading + (e.g. +31612345678).
- * Replace the sample entry with your real WhatsApp number (same format as Twilio `From` after stripping `whatsapp:`).
- */
-const PROFILES: Record<string, BusinessProfile> = {
-  "+447535065178": {
-    phone: "+447535065178",
-    name: "Ivo",
-    country: "Italy",
-    tax_regime: "Forfettario",
-    business_type: "Sole proprietor",
-    city: "Cagliari",
-    accountant_status: "External accountant yearly",
-    notes: "VAT registered",
-  },
+/** Row shape for `public.user_profiles` (Supabase). */
+export type UserProfileRow = {
+  id: string;
+  whatsapp_e164: string;
+  name: string;
+  country: string;
+  tax_regime: string;
+  business_type: string;
+  city: string;
+  accountant_status: string;
+  notes: string;
+  created_at: string;
+  updated_at: string;
 };
+
+export function rowToBusinessProfile(row: UserProfileRow): BusinessProfile {
+  return {
+    phone: row.whatsapp_e164,
+    name: row.name,
+    country: row.country,
+    tax_regime: row.tax_regime,
+    business_type: row.business_type,
+    city: row.city,
+    accountant_status: row.accountant_status,
+    notes: row.notes,
+  };
+}
 
 /**
  * Twilio WhatsApp From looks like whatsapp:+31612345678
@@ -42,12 +55,29 @@ export function normalizePhoneFromTwilio(from: string | undefined): string | nul
   return s;
 }
 
-export function getProfileByNormalizedPhone(
+/**
+ * Load business profile for a normalized E.164 WhatsApp number from Supabase.
+ */
+export async function getProfileByNormalizedPhoneFromDb(
   normalized: string | null
-): BusinessProfile | null {
+): Promise<BusinessProfile | null> {
   if (!normalized) return null;
-  if (PROFILES[normalized]) return PROFILES[normalized];
-  return null;
+
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase
+    .from("user_profiles")
+    .select(
+      "id, whatsapp_e164, name, country, tax_regime, business_type, city, accountant_status, notes, created_at, updated_at"
+    )
+    .eq("whatsapp_e164", normalized)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[maverick] user_profiles lookup failed", error.message);
+    throw new Error("Database error loading profile");
+  }
+  if (!data) return null;
+  return rowToBusinessProfile(data as UserProfileRow);
 }
 
 export function formatProfileForPrompt(profile: BusinessProfile): string {

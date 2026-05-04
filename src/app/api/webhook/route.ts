@@ -1,7 +1,8 @@
 import { buildSystemPrompt, buildUserMessage } from "@/lib/prompts";
 import { answerBookkeepingQuestion } from "@/lib/openai";
 import {
-  getProfileByNormalizedPhone,
+  type BusinessProfile,
+  getProfileByNormalizedPhoneFromDb,
   normalizePhoneFromTwilio,
 } from "@/lib/profiles";
 import {
@@ -59,7 +60,13 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
-  const profile = getProfileByNormalizedPhone(normalized);
+  let profile: BusinessProfile | null;
+  try {
+    profile = await getProfileByNormalizedPhoneFromDb(normalized);
+  } catch (err) {
+    console.error("[maverick] profile database error", err);
+    return twimlMessageResponse(GENERIC_ERROR_REPLY);
+  }
   if (!profile) {
     return twimlMessageResponse(UNREGISTERED_REPLY);
   }
