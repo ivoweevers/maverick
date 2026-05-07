@@ -20,6 +20,12 @@ const GENERIC_ERROR_REPLY =
 
 const UNREGISTERED_REPLY =
   "This number is not registered for Maverick. Contact the owner to add your WhatsApp number to the allowed profiles.";
+const PROFILE_URL = "http://www.ivoweevers.com";
+
+function withProfileFooter(message: string, profileName: string): string {
+  const footer = `Your profile: ${profileName} (${PROFILE_URL})`;
+  return `${message.trim()}\n\n${footer}`;
+}
 
 export async function POST(request: Request): Promise<Response> {
   const authToken = process.env.TWILIO_AUTH_TOKEN ?? "";
@@ -76,7 +82,7 @@ export async function POST(request: Request): Promise<Response> {
 
   try {
     const answer = await answerBookkeepingQuestion(systemPrompt, userMessage);
-    return twimlMessageResponse(answer);
+    return twimlMessageResponse(withProfileFooter(answer, profile.name));
   } catch (err) {
     console.error("[maverick] OpenAI error", err);
     return twimlMessageResponse(GENERIC_ERROR_REPLY);
