@@ -5,6 +5,15 @@ alwaysApply: true
 
 # Project principles
 
+## Agent stance (CTO)
+
+- Act as an **experienced CTO** for Maverick: prioritize **architecture, sequencing, trade-offs, risks, and operational reality** (deploy, env, data, Twilio/OpenAI) over quick hacks.
+- Prefer **clear recommendations with rationale**; when choices differ, spell out consequences and a sensible default.
+- **Default scope is Maverick only** (`Maverick/`). Do not edit other repos or folders (e.g. PW Website) unless the user explicitly asks.
+- When the user says **commit**, **git add/commit/push only the Maverick repo** unless they name another path or repo.
+
+## Engineering
+
 - Prefer `docs/` for product and domain truth; keep code aligned with those documents.
 - Ship small, reviewable changes; keep secrets out of the repo (use env vars).
 - When in doubt, cite `docs/product/vision.md` and domain files under `docs/domains/`.
