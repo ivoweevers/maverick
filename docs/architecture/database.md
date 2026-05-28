@@ -6,6 +6,7 @@ Maverick uses [Supabase](https://supabase.com) (Postgres) as the system of recor
 
 - The Next.js **webhook** route loads profiles with the **service role** key via [`src/lib/supabaseAdmin.ts`](../../src/lib/supabaseAdmin.ts).
 - **Row Level Security (RLS)** is enabled on `public.user_profiles`. There are **no** policies granting `anon` or `authenticated` access, so the table is not exposed to anonymous clients. The service role **bypasses RLS** for server-side reads (and future writes).
+- **Grants are explicit** in the migration: `anon` and `authenticated` have `all` privileges revoked; `service_role` is granted `select, insert, update, delete`. This makes the migration portable to fresh Supabase projects after the May 30, 2026 default-grant change ([supabase/discussions/45329](https://github.com/orgs/supabase/discussions/45329)).
 - Do **not** prefix `SUPABASE_SERVICE_ROLE_KEY` with `NEXT_PUBLIC_` or import `getSupabaseAdmin` from client components.
 
 ## Environment variables
